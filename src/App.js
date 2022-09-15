@@ -21,7 +21,7 @@ const TaskBars = (props) => {
           value="firstCheck"
           defaultChecked={props.checked}
         ></input>
-        <label for="firstCheck" id={props.done && "strikeThrough"}>
+        <label htmlFor="firstCheck" id={props.done ? "strikeThrough" : ""}>
           {props.label}
         </label>
       </div>
