@@ -1,94 +1,43 @@
 import { useState } from "react";
 import "./App.css";
-// import React, { useState } from "react";
-
-// const Button = (props) => {
-//   console.log(props)
-//   return <button style={{backgroundColor: props.color}}>{props.text}</button>;
-// };
-// <Button text={'hi'} color={'red'}/>
-// <Button text={'hello'} color={'blue'} />
-// <Button text={'hey'} color={'yellow'} />
-// <Button text={'bye'} color={'gray'} />
-// <Button text={'cya'} color={'black'} />
-
-const TaskBars = (props) => {
-  return (
-    <div className="firstItem">
-      <div id="checkBoxLeftSide">
-        <input
-          type="checkbox"
-          id="firstCheckBox"
-          value="firstCheck"
-          defaultChecked={props.checked}
-        ></input>
-        <label htmlFor="firstCheck" id={props.done ? "strikeThrough" : ""}>
-          {props.label}
-        </label>
-      </div>
-      <div id="checkBoxRightSide">
-        <svg
-          id="trash"
-          xmlns="http://www.w3.org/2000/svg"
-          x="0px"
-          y="0px"
-          width="48"
-          height="48"
-          viewBox="0 0 172 172"
-          onClick={props.onDelete}
-        >
-          <g
-            fill="none"
-            fillRule="nonzero"
-            stroke="none"
-            strokeWidth="1"
-            strokeLinecap="butt"
-            strokeLinejoin="miter"
-            strokeMiterlimit="10"
-            strokeDasharray=""
-            strokeDashoffset="0"
-            fontFamily="none"
-            fontWeight="none"
-            fontSize="none"
-            textAnchor="none"
-          >
-            <path d="M0,172v-172h172v172z" fill="none"></path>
-            <g fill="#e74c3c">
-              <path d="M75.25,24.1875c-2.96969,0 -5.375,2.40531 -5.375,5.375v2.6875h-32.25c-2.967,0 -5.375,2.408 -5.375,5.375c0,2.967 2.408,5.375 5.375,5.375h96.75c2.967,0 5.375,-2.408 5.375,-5.375c0,-2.967 -2.408,-5.375 -5.375,-5.375h-32.25v-2.6875c0,-2.96969 -2.40531,-5.375 -5.375,-5.375zM40.3125,48.375v75.25c0,8.89294 7.23206,16.125 16.125,16.125h59.125c8.89294,0 16.125,-7.23206 16.125,-16.125v-75.25zM60.46875,59.125c2.22525,0 4.03125,1.80331 4.03125,4.03125v56.4375c0,2.22794 -1.806,4.03125 -4.03125,4.03125c-2.22525,0 -4.03125,-1.80331 -4.03125,-4.03125v-56.4375c0,-2.22794 1.806,-4.03125 4.03125,-4.03125zM86,59.125c2.967,0 5.375,2.408 5.375,5.375v53.75c0,2.967 -2.408,5.375 -5.375,5.375c-2.967,0 -5.375,-2.408 -5.375,-5.375v-53.75c0,-2.967 2.408,-5.375 5.375,-5.375zM111.53125,59.125c2.22525,0 4.03125,1.80331 4.03125,4.03125v56.4375c0,2.22794 -1.806,4.03125 -4.03125,4.03125c-2.22525,0 -4.03125,-1.80331 -4.03125,-4.03125v-56.4375c0,-2.22794 1.806,-4.03125 4.03125,-4.03125z"></path>
-            </g>
-            <g fill="#cccccc">
-              <path d="M99.195,68.94v3.7h-10.97v30.42h-4.48v-30.42h-10.94v-3.7z"></path>
-            </g>
-          </g>
-        </svg>
-      </div>
-    </div>
-  );
-};
+import TaskBars from "./component/TaskBars";
 
 function App() {
-  const [list, setList] = useState([])
-  const [input, setInput] = useState([""])
+  // make an array that stores the input data using useState
+  // make another one that takes in the user input and
+  // makes it the taskName
+  const [list, setList] = useState([]);
+  const [taskName, setTaskName] = useState("");
 
+  const [deletedTasks, setDeletedTasks] = useState([]);
+  // make a function that creates new Todo's with unique id
+  // and then set the newTodo to a new list created through ...
+  // after that finally clear input box by setting the taskname
+  // string value as empty string
   const createTodo = (todo) => {
     const newTodo = {
       id: Math.random(),
-      todo: todo
-    }
-
-    // add the todo to the list
+      todo: todo,
+    };
     setList([...list, newTodo]);
-    // clear input box
-    setInput("");
-  }
-
-  const deleteItem = () => {
-    
-
-    console.log("delete clicked");
+    setTaskName("");
   };
-
-  // const [count, setCount] = useState(0);
+  // make a function that deletes specified components
+  // start it off by taking in the unique id of the components
+  // after make a filtered list with the todos and return the function by setting the
+  // todo id as NAN
+  // after filtering the list, set the list as the new filtered list
+  const deleteItem = (id) => {
+    const filteredList = list.filter((todo) => {
+      return todo.id !== Number(id);
+    });
+    const deletedTask = list.find((todo) => {
+      return todo.id === Number(id);
+    });
+    setDeletedTasks([...deletedTasks, deletedTask]);
+    setList(filteredList);
+  };
+  const moveDeletedTasks = () => {};
 
   return (
     <div className="mainContainer">
@@ -100,29 +49,52 @@ function App() {
           <h1 id="contentTitle">ToDo List</h1>
           <div className="taskBarContainer">
             <div id="taskBar">
-              <input type="text" id="taskInput" placeholder="New Task" value={input} onChange={(e) => setInput(e.target.value)}></input>
+              <input
+                type="text"
+                id="taskInput"
+                placeholder="New Task"
+                value={taskName}
+                onChange={(e) => setTaskName(e.target.value)}
+              ></input>
             </div>
-            <button onClick={() => createTodo(input)}>Add</button>
+            <button onClick={() => createTodo(taskName)}>Add</button>
           </div>
-          <div className="checkListContainer">
-            <TaskBars
-              label={"First item"}
-              checked={false}
-              done={false}
-              onDelete={deleteItem}
-            />
-            <TaskBars
-              label={"Second item"}
-              checked={false}
-              done={false}
-              onDelete={deleteItem}
-            />
-            <TaskBars
-              label={"Third item"}
-              checked={false}
-              done={false}
-              onDelete={deleteItem}
-            />
+          <div className="taskContainers">
+            <div className="checkListContainer">
+            <h1>Tasks</h1>
+              {
+                // start off by mapping the todo list and
+                // add all the attributes like the label,
+                // onDelete and the id's for all the taskbars
+                list.map((todo) => {
+                  return (
+                    <TaskBars
+                      key={todo.id}
+                      id={todo.id}
+                      label={todo.todo}
+                      checked={false}
+                      done={false}
+                      onDelete={deleteItem}
+                    />
+                  );
+                })
+              }
+            </div>
+            <div className="deletedTasks">
+              <h1>Deleted tasks</h1>
+              {deletedTasks.map((todo) => {
+                return (
+                  <TaskBars
+                    key={todo.id}
+                    id={todo.id}
+                    label={todo.todo}
+                    checked={false}
+                    done={false}
+                    onDelete={deleteItem}
+                  />
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
