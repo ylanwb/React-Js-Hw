@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./App.css";
 // import React, { useState } from "react";
 
@@ -66,14 +67,25 @@ const TaskBars = (props) => {
 };
 
 function App() {
-  const consoleLog = () => {
-    console.log("hello world");
-  };
-  const consoleLogTwo = () => {
-    console.log("hello");
-  };
-  const consoleLogThree = () => {
-    console.log("world");
+  const [list, setList] = useState([])
+  const [input, setInput] = useState([""])
+
+  const createTodo = (todo) => {
+    const newTodo = {
+      id: Math.random(),
+      todo: todo
+    }
+
+    // add the todo to the list
+    setList([...list, newTodo]);
+    // clear input box
+    setInput("");
+  }
+
+  const deleteItem = () => {
+    
+
+    console.log("delete clicked");
   };
 
   // const [count, setCount] = useState(0);
@@ -88,28 +100,28 @@ function App() {
           <h1 id="contentTitle">ToDo List</h1>
           <div className="taskBarContainer">
             <div id="taskBar">
-              <input type="text" id="taskInput" placeholder="New Task"></input>
+              <input type="text" id="taskInput" placeholder="New Task" value={input} onChange={(e) => setInput(e.target.value)}></input>
             </div>
-            <button>Add</button>
+            <button onClick={() => createTodo(input)}>Add</button>
           </div>
           <div className="checkListContainer">
             <TaskBars
               label={"First item"}
-              checked={true}
-              done={true}
-              onDelete={consoleLog}
+              checked={false}
+              done={false}
+              onDelete={deleteItem}
             />
             <TaskBars
               label={"Second item"}
               checked={false}
               done={false}
-              onDelete={consoleLogTwo}
+              onDelete={deleteItem}
             />
             <TaskBars
               label={"Third item"}
               checked={false}
               done={false}
-              onDelete={consoleLogThree}
+              onDelete={deleteItem}
             />
           </div>
         </div>
