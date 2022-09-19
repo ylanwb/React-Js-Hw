@@ -78,7 +78,7 @@ button {
   display: flex;
   align-items: center;
   margin-bottom: -1.5px;
-  border: 1.5px solid #ccc;
+  border-top: 1.5px solid #ccc;
 }
 #checkBoxLeftSide {
   width: 50%;
@@ -111,9 +111,15 @@ label {
 }
 .deletedTasks {
   width: 40%;
+  height: fit-content;
+  border: 1.5px solid #ccc;
+  border-radius: 4px;
 }
 .checkListContainer {
   width: 40%;
+  height: fit-content;
+  border: 1.5px solid #ccc;
+  border-radius: 4px;
 }
 h1 {
   text-align: center;
